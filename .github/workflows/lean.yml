@@ -1,30 +1,18 @@
-name: Continuous Mathematical Verification Pipeline
+name: Lean
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [ main ]
   pull_request:
-    branches: [ main, master ]
+    branches: [ main ]
 
 jobs:
   build:
-    name: Run Lean 4 Theorem Verification
+    name: lake build
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout Local Repository Source
-      uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-    - name: Initialize Lean 4 Environment Toolchain
-      uses: leanprover/lean-action@v1
-      with:
-        lean-version: 'leanprover/lean4:v4.31.0-rc2'
-
-    - name: Hydrate Precompiled Mathematical Cache
-      run: |
-        lake exe cache get
-
-    - name: Execute Lean Project Audit
-      run: |
-        lake clean
-        lake build
+      # Installs the toolchain from lean-toolchain, pulls the prebuilt
+      # Mathlib cache, then runs `lake build`.
+      - uses: leanprover/lean-action@v1

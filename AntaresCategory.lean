@@ -2,18 +2,26 @@ import Mathlib.Tactic
 
 namespace AntaresCategory
 
-structure RegistryObject where id : ℕ; data : String
-structure Kernel where seed : String
-structure Governance where allowed : String → Bool
-structure Export where value : String
+structure RegistryObject where
+  id   : ℕ
+  data : String
+
+structure Kernel where
+  seed : String
+
+structure Governance where
+  allowed : String → Bool
+
+structure Export where
+  value : String
 
 structure SystemState where
   registry   : List RegistryObject
   kernel     : Kernel
   governance : Governance
-  export     : Export
+  exported   : Export
 
-def Transition : Type :=
+abbrev Transition : Type :=
   List (List String
         × (List RegistryObject → List RegistryObject)
         × (Kernel → Kernel)
@@ -29,7 +37,7 @@ def stepF (s : SystemState)
   { registry   := st.2.1 s.registry
   , kernel     := st.2.2.1 s.kernel
   , governance := s.governance
-  , export     := st.2.2.2 s.kernel }
+  , exported   := st.2.2.2 s.kernel }
 
 def apply (s : SystemState) (t : Transition) : SystemState :=
   t.foldl stepF s
@@ -67,10 +75,10 @@ def ACI_Category : Category :=
   , Hom      := Morphism
   , id       := ⟨[], rfl⟩
   , comp     := compM
-  , id_left  := by intros; cases f; simp [compM, composeT, apply]
-  , id_right := by intros; cases f; simp [compM, composeT, apply, apply_append]
+  , id_left  := by intro _ _ f; cases f; simp [compM, composeT]
+  , id_right := by intro _ _ f; cases f; simp [compM, composeT]
   , assoc    := by
-      intros; cases f; cases g; cases h
+      intro _ _ _ _ f g h; cases f; cases g; cases h
       simp [compM, composeT, List.append_assoc] }
 
 end AntaresCategory

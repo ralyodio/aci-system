@@ -16,3 +16,5 @@ rev = "v4.31.0-rc2"
 
 [[lean_lib]]
 name = "MyProject"
+# Optimus7 is left out until it is ported to the current Mathlib API.
+roots = ["MyProject", "AWM21", "AntaresCategory", "Manifold21", "PhysicsCore"]

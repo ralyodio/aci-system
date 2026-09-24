@@ -3,3 +3,4 @@ build/
 *.olean
 *.ilean
 .lake/build/
+__pycache__/
