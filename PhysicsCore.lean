@@ -12,7 +12,7 @@ structure EnergyTriad where
 -- LAWSON CRITERION
 def LawsonBound : ℝ := 1e21
 
-def lawson_check (n T τ : ℝ) : Bool :=
+noncomputable def lawson_check (n T τ : ℝ) : Bool :=
   decide (n * T * τ ≥ LawsonBound)
 
 -- DEI TRIPLE PRODUCT
